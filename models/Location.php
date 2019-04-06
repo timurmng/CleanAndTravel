@@ -38,7 +38,7 @@ class Location extends \yii\db\ActiveRecord
             [['latitude', 'longitude'], 'number'],
             [['locationName'], 'string', 'max' => 60],
             [['details'], 'string', 'max' => 255],
-            [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['idUser' => 'id']],
+            [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['idUser' => 'id']],
         ];
     }
 
