@@ -36,11 +36,9 @@ class LoginForm extends Model
     }
 
     /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * @param $attribute
+     * @param $params
+     * @throws \yii\base\Exception
      */
     public function validatePassword($attribute, $params)
     {
@@ -68,7 +66,7 @@ class LoginForm extends Model
     /**
      * Finds user by [[username]]
      *
-     * @return User|null
+     * @return User | null
      */
     public function getUser()
     {
