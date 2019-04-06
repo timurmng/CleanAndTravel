@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $badgesName
  *
- * @property Badgesusers[] $badgesusers
+ * @property BadgesUser[] $badgesusers
  */
 class Badge extends \yii\db\ActiveRecord
 {
@@ -40,15 +40,15 @@ class Badge extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'badgesName' => 'Badges Name',
+            'badgesName' => 'Badge Name',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBadgesusers()
+    public function getBadgesUsers()
     {
-        return $this->hasMany(Badgesusers::className(), ['idBadges' => 'id']);
+        return $this->hasMany(BadgesUser::className(), ['idBadges' => 'id']);
     }
 }

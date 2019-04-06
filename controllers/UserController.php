@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\components\AccessRule;
+use app\models\BadgesUser;
+use app\models\Friends;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
@@ -61,10 +63,6 @@ class UserController extends Controller
         ];
     }
 
-    /**
-     * Lists all User models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new UserSearch();
@@ -77,28 +75,17 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
         $model = $this->findModel($id);
 
-        if ($model->type == User::TYPE_USER) {
-            return $this->render('view_user', [
-                'model' => $model,
-            ]);
-        } elseif ($model->type == User::TYPE_COMPANY) {
-            return $this->render('view_company', [
-                'model' => $model,
-            ]);
-        } elseif ($model->type == User::TYPE_ADMIN) {
-            return $this->render('view_admin', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('view', [
+            'model' => $model
+        ]);
     }
 
     /**
@@ -116,12 +103,61 @@ class UserController extends Controller
         return $this->render('create', ['model' => $model,]);
     }
 
+    public function actionBadges()
+    {
+        $badges = yii::$app->user->identity->badges;
+
+        return $this->render('badges', [
+            'badges' => $badges
+        ]);
+    }
+
+    public function actionFriends()
+    {
+        $friends = yii::$app->user->identity->friends;
+        return $this->render('friends', [
+            'friends' => $friends
+        ]);
+    }
+
+    public function actionAddFriend()
+    {
+        $friend = new Friends();
+
+        if (yii::$app->request->isPost) {
+
+            $friendEmail = yii::$app->request->post('Friends')['friendEmail'];
+
+            if ($friendEmail == yii::$app->user->identity->email) {
+                yii::$app->session->setFlash('warning', 'Invalid email address');
+                return $this->refresh();
+            }
+
+            $user = User::findOne(['email' => $friendEmail]);
+
+            if (!$user) {
+                yii::$app->session->setFlash('warning', 'Invalid email address');
+                return $this->refresh();
+            }
+
+            $friend->idUser1 = yii::$app->user->id;
+            $friend->idUser2 = $user->getId();
+
+            if ($friend->save()) {
+                yii::$app->session->setFlash('success', 'Friend successfully added!');
+                return $this->redirect('/user/friends');
+            }
+
+        }
+        return $this->render('add_friend', [
+            'friend' => $friend
+        ]);
+    }
+
     /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -137,14 +173,13 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public
-    function actionDelete($id)
+    public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
@@ -152,11 +187,9 @@ class UserController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return User|null
+     * @throws NotFoundHttpException
      */
     protected function findModel($id)
     {

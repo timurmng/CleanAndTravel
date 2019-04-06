@@ -17,6 +17,13 @@ use Yii;
  */
 class Request extends \yii\db\ActiveRecord
 {
+
+    const STATUS_PENDING = 1;
+    const STATUS_ACCEPTED = 2;
+    const STATUS_DECLINED = 3;
+    const STATUS_FINALIZED = 4;
+    const STATUS_ABSENT = 5;
+
     /**
      * {@inheritdoc}
      */

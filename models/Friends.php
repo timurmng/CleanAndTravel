@@ -16,6 +16,9 @@ use Yii;
  */
 class Friends extends \yii\db\ActiveRecord
 {
+
+    public $friendEmail;
+
     /**
      * {@inheritdoc}
      */

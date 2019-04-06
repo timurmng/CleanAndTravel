@@ -13,6 +13,13 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $password
  * @property int $type
+ * @property string $phoneNumber
+ *
+ * @property BadgesUser[] $badges
+ * @property Friends[] $friends
+ * @property Invite[] $receiver
+ * @property Invite[] $sender
+ * @property Location[] $locations
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -31,7 +38,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['fullname', 'email', 'password'], 'required', 'on' => self::SCENARIO_CREATE],
+            [['fullname', 'email', 'password', 'type', 'phoneNumber'], 'required', 'on' => self::SCENARIO_CREATE],
             [['type'], 'integer'],
             [['email'], 'email'],
             [['fullname', 'email', 'password'], 'string', 'max' => 60],
@@ -46,6 +53,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'password' => 'Password',
             'type' => 'Type',
+            'phoneNumber' => 'Phone number'
         ];
     }
 
@@ -99,5 +107,42 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function findIdentity($id)
     {
         return static::findOne($id);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceiver()
+    {
+        return $this->hasMany(Invite::className(), ['idReceiver' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSender()
+    {
+        return $this->hasMany(Invite::className(), ['idSender' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocations()
+    {
+        return $this->hasMany(Location::className(), ['idUser' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBadges()
+    {
+        return $this->hasMany(BadgesUser::className(), ['idUser' => 'id']);
+    }
+
+    public function getFriends()
+    {
+        return $this->hasMany(Friends::className(), ['idUser1' => 'id']);
     }
 }

@@ -11,17 +11,17 @@ use Yii;
  * @property int $idUser
  * @property int $idBadges
  *
- * @property Badges $badges
- * @property Users $user
+ * @property Badge $badges
+ * @property User $user
  */
-class Badgesuser extends \yii\db\ActiveRecord
+class BadgesUser extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'badgesusers';
+        return 'badgesUsers';
     }
 
     /**
@@ -32,8 +32,8 @@ class Badgesuser extends \yii\db\ActiveRecord
         return [
             [['idUser', 'idBadges'], 'required'],
             [['idUser', 'idBadges'], 'integer'],
-            [['idBadges'], 'exist', 'skipOnError' => true, 'targetClass' => Badges::className(), 'targetAttribute' => ['idBadges' => 'id']],
-            [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['idUser' => 'id']],
+            [['idBadges'], 'exist', 'skipOnError' => true, 'targetClass' => Badge::className(), 'targetAttribute' => ['idBadges' => 'id']],
+            [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['idUser' => 'id']],
         ];
     }
 
@@ -52,9 +52,9 @@ class Badgesuser extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBadges()
+    public function getBadge()
     {
-        return $this->hasOne(Badges::className(), ['id' => 'idBadges']);
+        return $this->hasOne(Badge::className(), ['id' => 'idBadges']);
     }
 
     /**
@@ -62,6 +62,6 @@ class Badgesuser extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(Users::className(), ['id' => 'idUser']);
+        return $this->hasOne(User::className(), ['id' => 'idUser']);
     }
 }

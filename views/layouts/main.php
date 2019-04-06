@@ -39,17 +39,46 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Register', 'url' => ['/user/create']],
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            [
+                'label' => 'Register',
+                'url' => ['/user/create'],
+                'visible' => yii::$app->user->isGuest
+            ],
+            [
+                'label' => 'Home',
+                'url' => ['/site/index'],
+            ],
+            [
+                'label' => 'Locations',
+                'url' => ['/locations/index'],
+                'visible' => !yii::$app->user->isGuest
+            ],
+            [
+                'visible' => !yii::$app->user->isGuest,
+                'label' => yii::$app->user->isGuest ? '' : yii::$app->user->identity->fullname,
+                'items' => [
+                    [
+                        'label' => 'Profile',
+                        'url' => ['/user/view/' . yii::$app->user->getId()],
+                    ],
+                    [
+                        'label' => 'Friends',
+                        'url' => ['/user/friends']
+                    ],
+                    [
+                        'label' => 'Badges',
+                        'url' => ['/user/badges'],
+                    ]
+
+                ]
+            ],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->fullname . ')',
+                    'Logout',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
@@ -61,9 +90,6 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
@@ -71,9 +97,11 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">
+            <a href="/site/contact">Contact</a>
+        </p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">&copy; Clean and Travel <?= date('Y') ?></p>
     </div>
 </footer>
 

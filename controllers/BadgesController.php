@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\components\AccessRule;
+use app\models\User;
 use Yii;
 use app\models\Badge;
 use app\models\BadgeSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +23,36 @@ class BadgesController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className()
+                ],
+                'only' => ['index', 'create', 'update', 'view', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'update', 'view', 'delete'],
+                        'allow' => true,
+                        'roles' => [User::TYPE_ADMIN]
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => [User::TYPE_COMPANY, User::TYPE_USER],
+                    ],
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['?']
+                    ],
+                    [
+                        'actions' => ['create'],
+                        'allow' => false,
+                        'roles' => ['@']
+                    ]
+
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
