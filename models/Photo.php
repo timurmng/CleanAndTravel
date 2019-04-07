@@ -22,8 +22,6 @@ class Photo extends \yii\db\ActiveRecord
     const TYPE_BEFORE = 1;
     const TYPE_AFTER = 2;
 
-    public $file;
-
     /**
      * {@inheritdoc}
      */
@@ -38,10 +36,9 @@ class Photo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['locationId', 'type'], 'required'],
-            [['file'], 'file', 'extensions' => 'jpg, jpeg, png, bmp'],
+            [['locationId', 'type'], 'required', 'on' => 'create'],
             [['locationId', 'type'], 'integer'],
-            [['photoPath'], 'string', 'max' => 255],
+            [['photoPath'], 'file', 'extensions' => 'jpg, jpeg, png, bmp'],
             [['locationId'], 'exist', 'skipOnError' => true, 'targetClass' => Location::className(), 'targetAttribute' => ['locationId' => 'id']],
         ];
     }
@@ -67,11 +64,11 @@ class Photo extends \yii\db\ActiveRecord
         return $this->hasOne(Location::className(), ['id' => 'locationId']);
     }
 
-    public function saveFile($path, $fileName, $extension)
+    public static function saveFile($path, $fileName, $extension, $locationId)
     {
         $file = $fileName . '.' . $extension;
         try {
-            BaseFileHelper::createDirectory($path . self::UPLOADS_FOLDER . $this->location->id);
+            BaseFileHelper::createDirectory($path . self::UPLOADS_FOLDER . $locationId);
         } catch (\Exception $exception) {
             print_r($exception->getMessage());
         }

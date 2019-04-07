@@ -17,7 +17,7 @@ $this->title = 'Add photo to '. $location->locationName;
 ]); ?>
 
 <div class="photo-form">
-    <?= $form->field($model, 'file')->fileInput([
+    <?= $form->field($model, 'photoPath')->fileInput([
         'accept' => 'jpg, jpeg, bmp, png'
     ]); ?>
 

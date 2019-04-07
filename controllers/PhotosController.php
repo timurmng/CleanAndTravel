@@ -15,19 +15,20 @@ class PhotosController extends \yii\web\Controller
 
         if (yii::$app->request->isPost) {
 
-            $model->file = yii\web\UploadedFile::getInstance($model, 'file');
+            $model->photoPath = yii\web\UploadedFile::getInstance($model, 'photoPath');
             $model->locationId = $location->id;
 
-            if ($model->file && ($model->type = yii::$app->request->post('Photo')['type']) && $model->validate()) {
+            if ($model->photoPath && ($model->type = yii::$app->request->post('Photo')['type']) && $model->validate()) {
 
-                $filez = $model->saveFile(
+                $filez = Photo::saveFile(
                     yii::$app->basePath,
-                    Photo::UPLOADS_FOLDER . $location->id . '/' . $model->file->baseName,
-                    $model->file->extension);
-
+                    Photo::UPLOADS_FOLDER . $location->id . '/' . $model->photoPath->baseName,
+                    $model->photoPath->extension, $location->id);
+                $model->photoPath->saveAs(yii::$app->basePath . $filez);
                 $model->photoPath = yii::$app->basePath . $filez;
-                $model->file->saveAs(yii::$app->basePath . $filez);
-
+//                echo "<PRE>";
+//                print_r($model->file);
+//                die();
                 if ($model->save()) {
                     return $this->redirect('/location/view/' . $location->id);
                 }

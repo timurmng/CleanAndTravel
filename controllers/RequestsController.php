@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Location;
 use Yii;
 use app\models\Request;
 use app\models\RequestSearch;
@@ -35,13 +36,56 @@ class RequestsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new RequestSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $locations = Location::findAll(['idUser' => yii::$app->user->getId()]);
+        $requests = [];
+        foreach ($locations as $location) {
+            $requests[$location->id] = Request::findAll(['locationId' => $location->id]);
+        }
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'requests' => $requests,
         ]);
+    }
+
+
+    public function actionAccept($id)
+    {
+        $request = Request::findOne($id);
+        $request->status = Request::STATUS_ACCEPTED;
+        if ($request->save()) {
+            yii::$app->session->setFlash('success', 'Request approved');
+            return $this->redirect(yii::$app->request->referrer);
+        }
+    }
+
+    public function actionDecline($id)
+    {
+        $request = Request::findOne($id);
+        $request->status = Request::STATUS_DECLINED;
+        if ($request->save()) {
+            yii::$app->session->setFlash('danger', 'Request declined');
+            return $this->redirect(yii::$app->request->referrer);
+        }
+    }
+
+    public function actionFinalize($id)
+    {
+        $request = Request::findOne($id);
+        $request->status = Request::STATUS_FINALIZED;
+        if ($request->save()) {
+            yii::$app->session->setFlash('danger', 'Request successfully finalized');
+            return $this->redirect(yii::$app->request->referrer);
+        }
+    }
+
+    public function actionAbsent($id)
+    {
+        $request = Request::findOne($id);
+        $request->status = Request::STATUS_ABSENT;
+        if ($request->save()) {
+            yii::$app->session->setFlash('danger', 'User set to be absent');
+            return $this->redirect(yii::$app->request->referrer);
+        }
     }
 
     /**

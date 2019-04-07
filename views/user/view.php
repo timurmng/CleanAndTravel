@@ -11,11 +11,11 @@ use yii\widgets\DetailView;
 $this->title = 'User Profile';
 \yii\web\YiiAsset::register($this);
 ?>
-
-<h2 class="page-header">
-    <?= $this->title; ?>
-</h2>
-
+<?php if (!yii::$app->request->isAjax) : ?>
+    <h2 class="page-header">
+        <?= $this->title; ?>
+    </h2>
+<?php endif; ?>
 <?php switch (yii::$app->user->identity->type) {
     case User::TYPE_ADMIN :
         echo $this->render('_admin', ['model' => $model]);

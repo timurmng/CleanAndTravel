@@ -59,10 +59,19 @@ class LocationsController extends Controller
         if ($request) {
             $status = false;
         }
+        if (yii::$app->request->isAjax) {
+            return $this->renderAjax('view', [
+                'model' => $this->findModel($id),
+                'status' => $status,
+                'isAjax' => true
+            ]);
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
             'status' => $status,
+            'isAjax' => false
         ]);
+
     }
 
     /**

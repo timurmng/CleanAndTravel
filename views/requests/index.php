@@ -1,39 +1,74 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\RequestSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Requests';
-$this->params['breadcrumbs'][] = $this->title;
+/* @var $requests \app\models\Request */
 ?>
-<div class="request-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php \yii\widgets\Pjax::begin(); ?>
 
-    <p>
-        <?= Html::a('Create Request', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="request-index">
+        <h2 class="page-header">Requests</h2>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php foreach ($requests as $k => $request): ?>
+            <?= \yii\widgets\DetailView::widget([
+                'model' => $request[0],
+                'attributes' => [
+                    [
+                        'attribute' => 'Organizer',
+                        'value' => function ($model) {
+                            return Html::button($model->user->fullname, [
+                                'value' => \yii\helpers\Url::to('/user/view/' . $model->user->id),
+                                'id' => 'modalButton'
+                            ]);
+                        },
+                        'format' => 'raw'
+                    ],
+                    [
+                        'attribute' => 'Location',
+                        'value' => function ($model) {
+                            return Html::a($model->location->locationName, '/locations/view/' . $model->location->id);
+                        },
+                        'format' => 'raw'
+                    ],
+                    [
+                        'attribute' => 'status',
+                        'value' => function ($model) {
+                            switch ($model->status) {
+                                case \app\models\Request::STATUS_PENDING:
+                                    return 'Pending';
+                                case \app\models\Request::STATUS_ACCEPTED:
+                                    return 'Accepted';
+                                case \app\models\Request::STATUS_DECLINED:
+                                    return 'Declined';
+                                case \app\models\Request::STATUS_FINALIZED:
+                                    return 'Finalized';
+                                case \app\models\Request::STATUS_ABSENT:
+                                    return 'Absent';
+                            }
+                        }
+                    ]
+                ]
+            ]); ?>
+            <div class="form-group pull-right">
+                <a href="/requests/accept/<?= $request[0]->id ?>" class="btn btn-default">Accept</a>
+                <a href="/requests/decline/<?= $request[0]->id ?>" class="btn btn-danger">Decline</a>
+                <a href="/requests/finalize/<?= $request[0]->id ?>" class="btn btn-success">Finalize</a>
+                <a href="/requests/absence/<?= $request[0]->id; ?>" class="btn btn-warning">Set absent</a>
+            </div>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        <?php endforeach; ?>
+    </div>
 
-            'id',
-            'idUser',
-            'locationId',
-            'status',
+<?php Modal::begin([
+    'header' => '<h4>Detalii Organizator</h4>',
+    'id' => 'modal',
+    'class' => 'modal-lg'
+]);
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-
-</div>
+echo '<div id="modalContent"></div>';
+Modal::end();
+?>

@@ -8,9 +8,6 @@ use yii\widgets\DetailView;
 ?>
 
 <div class="user-view">
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,

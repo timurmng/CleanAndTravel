@@ -14,7 +14,8 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Location */
-
+/* @var $isAjax boolean */
+/* @var $status boolean */
 yii::$app->session->set('last_location', $model->id);
 
 $home = new LatLng(['lat' => 44.445322, 'lng' => 26.050064]);
@@ -64,14 +65,16 @@ $map->appendScript($directionsService->getJs());
 
 $this->title = $model->locationName;
 \yii\web\YiiAsset::register($this);
+
 ?>
 <?php \yii\widgets\Pjax::begin(); ?>
 <div class="location-view">
 
-    <div class="col-md-6">
-        <?= $map->display() ?>
-    </div>
-
+    <?php if (!$isAjax) : ?>
+        <div class="col-md-6">
+            <?= $map->display() ?>
+        </div>
+    <?php endif; ?>
     <div class="col-md-6">
         <h1 class="page-header">
             <?= Html::encode($this->title) ?>
@@ -103,7 +106,15 @@ $this->title = $model->locationName;
             ]
         ]); ?>
 
-        <div class="div-footer">
+        <?php if ($model->photos) : ?>
+            <div class="photos-inline">
+                <?php foreach ($model->photos as $photo) : ?>
+                    <img src="../../<?= 'uploads/' . $model->id . '/' . substr($photo->photoPath, strrpos($photo->photoPath, '/') + 1) ?>"
+                         alt="" height="260">
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <div class="div-footer pull-right">
             <a href="/photos/add/" class="btn btn-primary">Add photos</a>
         </div>
     </div>

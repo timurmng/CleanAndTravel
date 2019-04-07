@@ -23,7 +23,7 @@ body {
     padding-top: 20px;
 }
 
-.location-main-content{
+.location-main-content {
     width: 100%;
     height: 300px;
 }
@@ -121,7 +121,7 @@ a.desc:after {
     outline: none;
 }
 
-    button {
+button {
     border: none;
     background-color: transparent;
 }
