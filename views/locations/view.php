@@ -77,31 +77,33 @@ $this->title = $model->locationName;
             <?= Html::encode($this->title) ?>
             <?php if ($status) : ?>
                 <div class="pull-right">
-                    <a href="/user/request/<?= $model->id; ?>" class="btn btn-default">Request to join</a>
+                    <a href="/user/request/<?= $model->id; ?>" class="btn btn-primary">Request to join</a>
                 </div>
             <?php endif; ?>
         </h1>
 
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                [
-                    'attribute' => 'details',
-                    'label' => 'Details'
-                ],
-                [
-                    'attribute' => 'organizator',
-                    'label' => 'Organizator',
-                    'value' => function ($model) {
-                        return Html::button($model->user->fullname, [
-                            'value' => \yii\helpers\Url::to('/user/view/' . $model->user->id),
-                            'id' => 'modalButton',
-                        ]);
-                    },
-                    'format' => 'raw'
+        <div class="location-main-content">
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    [
+                        'attribute' => 'details',
+                        'label' => 'Details'
+                    ],
+                    [
+                        'attribute' => 'organizator',
+                        'label' => 'Organizator',
+                        'value' => function ($model) {
+                            return Html::button($model->user->fullname, [
+                                'value' => \yii\helpers\Url::to('/user/view/' . $model->user->id),
+                                'id' => 'modalButton',
+                            ]);
+                        },
+                        'format' => 'raw'
+                    ]
                 ]
-            ]
-        ]); ?>
+            ]); ?>
+        </div>
 
         <div class="div-footer">
             <a href="/photos/add/" class="btn btn-primary">Add photos</a>

@@ -7,7 +7,6 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron">
-        <img src="saveTheWorld.gif">
     </div>
 
     <div class="body-content">
