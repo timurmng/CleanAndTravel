@@ -50,7 +50,7 @@ AppAsset::register($this);
             ],
             [
                 'label' => 'Requests',
-                'url' => ['/requests/index'],
+                'url' => ['index'],
                 'visible' => !yii::$app->user->isGuest && yii::$app->user->identity->type == \app\models\User::TYPE_COMPANY ? true : false
             ],
             [

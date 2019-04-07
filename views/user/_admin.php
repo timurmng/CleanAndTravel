@@ -17,16 +17,17 @@ use yii\widgets\DetailView;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'fullname',
-            'email:email',
-            'type',
-            'phoneNumber'
-        ],
-    ]) ?>
+    <div class="location-main-content">
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'fullname',
+                'email:email',
+                'type',
+                'phoneNumber'
+            ],
+        ]) ?>
+    </div>
 
 </div>

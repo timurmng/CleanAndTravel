@@ -9,13 +9,15 @@ use yii\widgets\DetailView;
 
 <div class="user-view">
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'fullname',
-            'email:email',
-            'phoneNumber'
-        ],
-    ]) ?>
+    <div class="location-main-content">
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'fullname',
+                'email:email',
+                'phoneNumber'
+            ],
+        ]) ?>
+    </div>
 
 </div>

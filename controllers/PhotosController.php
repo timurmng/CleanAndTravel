@@ -30,7 +30,7 @@ class PhotosController extends \yii\web\Controller
 //                print_r($model->file);
 //                die();
                 if ($model->save()) {
-                    return $this->redirect('/location/view/' . $location->id);
+                    return $this->redirect('../locations/view/' . $location->id);
                 }
             }
         }

@@ -5,7 +5,7 @@ $this->title = 'Friends'; ?>
 <h2 class="page-header">
     <?= $this->title; ?>
     <div class="pull-right">
-        <a href="/user/add-friend" class="btn btn-default">Add a friend</a>
+        <a href="add-friend" class="btn btn-default">Add a friend</a>
     </div>
 </h2>
 

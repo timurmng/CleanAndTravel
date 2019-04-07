@@ -80,7 +80,7 @@ $this->title = $model->locationName;
             <?= Html::encode($this->title) ?>
             <?php if ($status) : ?>
                 <div class="pull-right">
-                    <a href="/user/request/<?= $model->id; ?>" class="btn btn-primary">Request to join</a>
+                    <a href="../../user/request/<?= $model->id; ?>" class="btn btn-primary">Request to join</a>
                 </div>
             <?php endif; ?>
         </h1>
@@ -117,7 +117,7 @@ $this->title = $model->locationName;
             </div>
         <?php endif; ?>
         <div class="div-footer pull-right">
-            <a href="/photos/add/" class="btn btn-primary">Add photos</a>
+            <a href="../photos/add" class="btn btn-primary">Add photos</a>
         </div>
     </div>
 

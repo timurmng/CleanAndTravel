@@ -151,7 +151,7 @@ class UserController extends Controller
 
             if ($friend->save()) {
                 yii::$app->session->setFlash('success', 'Friend successfully added!');
-                return $this->redirect('/user/friends');
+                return $this->redirect('friends');
             }
 
         }

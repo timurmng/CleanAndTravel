@@ -30,7 +30,7 @@ use yii\grid\GridView;
                     [
                         'attribute' => 'Location',
                         'value' => function ($model) {
-                            return Html::a($model->location->locationName, '/locations/view/' . $model->location->id);
+                            return Html::a($model->location->locationName, 'locations/view/' . $model->location->id);
                         },
                         'format' => 'raw'
                     ],
