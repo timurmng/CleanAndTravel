@@ -100,7 +100,7 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer">
+<!--<footer class="footer">
     <div class="container">
         <p class="pull-left">
             <a href="/site/contact">Contact</a>
@@ -108,7 +108,7 @@ AppAsset::register($this);
 
         <p class="pull-right">&copy; Clean and Travel <?= date('Y') ?></p>
     </div>
-</footer>
+</footer>-->
 
 <?php $this->endBody() ?>
 </body>
