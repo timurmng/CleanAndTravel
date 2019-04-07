@@ -20,22 +20,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <div class="location-main-content">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'idUser',
-            'locationName',
-            'latitude',
-            'longitude',
-            //'details',
+                    //'id',
+                    //'idUser',
+                    'locationName',
+                    //'latitude',
+                    //'longitude',
+                    'details',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    ['class' => 'yii\grid\ActionColumn',
+                        "headerOptions" => ['style' => 'width:75px']],
+                ],
+            ]); ?>
+    </div>
 
 
 </div>
