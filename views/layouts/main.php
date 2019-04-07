@@ -51,7 +51,7 @@ AppAsset::register($this);
             [
                 'label' => 'Requests',
                 'url' => ['/requests/index'],
-                'visible' => yii::$app->user->identity->type == \app\models\User::TYPE_COMPANY ? true : false
+                'visible' => !yii::$app->user->isGuest && yii::$app->user->identity->type == \app\models\User::TYPE_COMPANY ? true : false
             ],
             [
                 'label' => 'Locations',

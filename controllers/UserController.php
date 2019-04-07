@@ -84,7 +84,12 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        return $this->renderAjax('view', [
+        if(yii::$app->request->isAjax){
+            return $this->renderAjax('view', [
+                'model' => $model
+            ]);
+        }
+        return $this->render('view', [
             'model' => $model
         ]);
     }
