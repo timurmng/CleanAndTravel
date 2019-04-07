@@ -15,6 +15,7 @@ use Yii;
  * @property string $details
  *
  * @property Invite[] $invites
+ * @property Photo[] $photos
  * @property User $user
  */
 class Location extends \yii\db\ActiveRecord
@@ -72,4 +73,13 @@ class Location extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'idUser']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhotos()
+    {
+        return $this->hasMany(Photo::className(), ['locationId' => 'id']);
+    }
+
 }

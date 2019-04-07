@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Request;
+use app\models\User;
 use Yii;
 use app\models\Location;
 use app\models\LocationSearch;
@@ -52,8 +54,14 @@ class LocationsController extends Controller
      */
     public function actionView($id)
     {
+        $status = true;
+        $request = Request::findAll(['locationId' => $id, 'idUser' => yii::$app->user->getId()]);
+        if ($request) {
+            $status = false;
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'status' => $status,
         ]);
     }
 

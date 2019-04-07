@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\AccessRule;
 use app\models\BadgesUser;
 use app\models\Friends;
+use app\models\Request;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
@@ -83,7 +84,7 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $model
         ]);
     }
@@ -184,6 +185,19 @@ class UserController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionRequest($id)
+    {
+        $request = new Request();
+        $request->idUser = yii::$app->user->identity->getId();
+        $request->locationId = $id;
+        $request->status = Request::STATUS_PENDING;
+
+        if ($request->save()) {
+            yii::$app->session->setFlash('warning', 'Request sent');
+            return $this->redirect(yii::$app->request->referrer);
+        }
     }
 
     /**

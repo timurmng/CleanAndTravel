@@ -20,6 +20,8 @@ use yii\web\IdentityInterface;
  * @property Invite[] $receiver
  * @property Invite[] $sender
  * @property Location[] $locations
+ * @property Rating[] $ratings
+ * @property Request[] $requests
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -144,5 +146,21 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function getFriends()
     {
         return $this->hasMany(Friends::className(), ['idUser1' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRatings()
+    {
+        return $this->hasMany(Rating::className(), ['idUserRatings' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRequests()
+    {
+        return $this->hasMany(Request::className(), ['idUser' => 'id']);
     }
 }
